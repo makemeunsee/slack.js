@@ -1,0 +1,73 @@
+<html>
+<head>
+<script type="text/javascript" src="Chart.min.js"></script>
+<script type="text/javascript">
+function valueChanged() {
+  var L = document.getElementById("lengthSlider").value;
+  document.getElementById("length").innerHTML = L;
+  var W = document.getElementById("weightSlider").value;
+  document.getElementById("weight").innerHTML = W;
+  draw(L,W);
+}
+function draw(L, W) {
+  var data = {
+	labels : [],
+	datasets : []
+  };
+
+  for(var i = 0; i < 16; i = i + 1){
+    var sag = (25 + i*25) / 100.0;
+    data.labels[i] = sag;
+  }
+  
+  data.datasets[0] = {
+			strokeColor : "rgba(151,187,205,1)",
+			pointColor : "rgba(151,187,205,1)",
+			pointStrokeColor : "#fff",
+			data : []
+		      };
+  for(var j = 0; j < 16; j = j + 1){
+    var sag = (25 + j*25) / 100.0;
+    var T = W * 9.81 * L * Math.sqrt((4.0 * sag * sag / (L * L)) + 1) / (4 * sag * 1000);
+    data.datasets[0].data[j] = Number((T).toFixed(3));
+  }
+
+  // configuration and initiation of plot
+  var ctx = document.getElementById("myChart").getContext("2d");
+  var options = {
+   bezierCurve : false,
+    animation : false,
+    datasetFill : false
+  };
+  var myNewChart = new Chart(ctx).Line(data, options);
+}
+</script>
+<title>Slackline tension graph</title>
+<style type="text/css">
+</style>
+</head>
+<body>
+<div style="position: relative;">
+  <div style="position: absolute; top: -5; left: 20;">
+    Tension (kN)
+  </div>
+  <div style="position: absolute; bottom: 10; left: 810;">
+    Sag (m)
+  </div>
+  <canvas id="myChart" width="800" height="600"/>
+</div>
+<p>
+Select line length (m): 
+<input id="lengthSlider" onchange="valueChanged()" type="range" name="length" min="10" max="250" step="10" value="50">
+<span id="length">50</span>
+</p>
+<p>
+Select practitioner weight (kg): 
+<input id="weightSlider" onchange="valueChanged()" type="range" name="weight" min="25" max="125" step="5" value="60">
+<span id="weight">60</span>
+</p>
+</body>
+<script type="text/javascript">
+valueChanged();
+</script>
+</html>
