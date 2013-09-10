@@ -18,16 +18,30 @@
     <script type="text/javascript" src="Chart.min.js"></script>
     <script type="text/javascript">
 function refreshMinSlider(newMax) {
-  var minValue = document.getElementById("sagMinSlider").value;
-  document.getElementById("p_minSlider").innerHTML ="Sag min (cm): "+
-"<input id=\"sagMinSlider\" onchange=\"refreshMaxSlider(this.value) ; valueChanged()\" type=\"range\" name=\"sagMin\" min=\"25\" max=\""+(parseInt(newMax)-25)+"\" step=\"25\" value=\""+minValue+"\">"+
-"<span id=\"sagMin\">"+minValue+"</span>";
+  var oldSlider = document.getElementById("sagMinSlider");
+  var newSlider = document.createElement("input");
+  newSlider.type = "range";
+  newSlider.id = "sagMinSlider";
+  newSlider.name = "sagMin";
+  newSlider.min = "25";
+  newSlider.max = parseInt(newMax)-25;
+  newSlider.step = "25";
+  newSlider.value = oldSlider.value;
+  newSlider.onchange = function() {refreshMaxSlider(newSlider.value) ; valueChanged()};
+  oldSlider.parentNode.replaceChild(newSlider, oldSlider);
 }
 function refreshMaxSlider(newMin) {
-  var maxValue = document.getElementById("sagMaxSlider").value;
-  document.getElementById("p_maxSlider").innerHTML ="Sag max (cm): "+
-"<input id=\"sagMaxSlider\" onchange=\"refreshMinSlider(this.value) ; valueChanged()\" type=\"range\" name=\"sagMax\" min=\""+(parseInt(newMin)+25)+"\" max=\"500\" step=\"25\" value=\""+maxValue+"\">"+
-"<span id=\"sagMax\">"+maxValue+"</span>";
+  var oldSlider = document.getElementById("sagMaxSlider");
+  var newSlider = document.createElement("input");
+  newSlider.type = "range";
+  newSlider.id = "sagMaxSlider";
+  newSlider.name = "sagMax";
+  newSlider.min = parseInt(newMin)+25;
+  newSlider.max = "500";
+  newSlider.step = "25";
+  newSlider.value = oldSlider.value;
+  newSlider.onchange = function() {refreshMinSlider(newSlider.value) ; valueChanged()};
+  oldSlider.parentNode.replaceChild(newSlider, oldSlider);
 }
 function valueChanged() {
   var sagMin = document.getElementById("sagMinSlider").value;
