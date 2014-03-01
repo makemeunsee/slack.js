@@ -3,6 +3,8 @@ slack.js
 
 Dynamic graph of the tension of a slackline. Using [Chart.js] (http://www.chartjs.org/).
 
+http://makemeunsee.github.io/slack.js/
+
 
 License
 -------
